@@ -105,7 +105,6 @@
             width: 200px;
             margin: 10px auto 10px auto;
         }
-
     </style>
 
     <script type="module">
@@ -135,10 +134,13 @@
         $("#postingbtn").click(async function () {
             let name = $('#name').val();
             let comment = $('#comment').val();
+        
 
             let doc = {
                 'name': name,
                 'comment': comment
+            
+                
             };
             await addDoc(collection(db, "firstteam"), doc);
 
@@ -220,12 +222,23 @@
 
     <div class="mypostingbox" id="postingbox">
 
-        <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="name" placeholder="방문자 성함">
-            <label for="floatingInput">이름을 남겨주세요!</label>
+        <div class="row g-2 mb-3">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="name" placeholder="방문자 성함" >
+                    <label for="floatingInputGrid">이름을 남겨주세요!</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="pass" placeholder="비밀번호" maxlength="6" >
+                    <label for="floatingInputGrid">비밀번호를 입력하세요</label>
+                </div>
+            </div>
         </div>
+
         <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="comment" placeholder="방명록을 입력해주세요!">
+            <input type="text" class="form-control" id="comment" placeholder="방명록을 입력해주세요!">
             <label for="floatingInput">방명록을 작성해주세요!</label>
         </div>
 
@@ -235,8 +248,10 @@
 
     <div class="cards">
         <div id="card" class="row row-cols-1 row-cols-md-2 g-2">
+           
 
         </div>
+
     </div>
 
 </body>

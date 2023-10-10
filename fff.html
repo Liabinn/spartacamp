@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팀 소개 페이지</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu&display=swap');
+
+
+        * {
+            font-family: 'Gaegu', cursive;
+        }
+
+        .banner {
+            height: 300px;
+
+            background-image: url('https://liabinn.github.io/spartacamp/잔디배경.jpg');
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .banner>h1 {
+            font-weight: 500;
+            font-size: 8ch;
+            text-decoration: underline;
+
+            text-decoration-color: white;
+            text-decoration-style: 30px;
+
+            margin: 70px auto 10px auto;
+        }
+
+        .mypostingbox {
+            width: 500px;
+            margin: 10px auto 20px auto;
+
+            border: 1px solid;
+            border-radius: 5px;
+
+            padding: 20px;
+            display: none;
+        }
+
+        .form-floating>input {
+            background-color: transparent;
+            color: black;
+        }
+
+        .form-floating>label {
+            color: black;
+        }
+
+        .input-group>label {
+            background-color: transparent;
+            color: black;
+        }
+
+        .mypostingbox>button {
+            width: 50%;
+            margin-left: 25%;
+        }
+
+        .middle {
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+        }
+
+        .cards {
+            width: 600px;
+
+            margin: 20px auto 100px auto;
+        }
+
+        body {
+            background-color: rgb(248, 253, 198);
+        }
+
+        .profile {
+            width: 600px;
+            margin: 20px auto 30px auto;
+        }
+
+        .card-body {
+            text-align: center;
+        }
+
+        .card-img {
+            width: 200px;
+            margin: 10px auto 10px auto;
+        }
+    </style>
+
+    <script type="module">
+        // Firebase SDK 라이브러리 가져오기
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEPoC1D8hBqj7-wU7zkktJMVj4_f5-f50",
+            authDomain: "sparta-cf818.firebaseapp.com",
+            projectId: "sparta-cf818",
+            storageBucket: "sparta-cf818.appspot.com",
+            messagingSenderId: "651060014552",
+            appId: "1:651060014552:web:5fdaec45ccf34bcf57d6ad",
+            measurementId: "G-CX5PRKKE4K"
+        };
+
+        // Firebase 인스턴스 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        $("#postingbtn").click(async function () {
+            let name = $('#name').val();
+            let comment = $('#comment').val();
+            let pass = $('#pass').val();
+
+            //파란패스는 id 패스를 정의
+            
+
+
+            let doc = {
+                'name': name,
+                'comment': comment,
+                'pass':pass
+
+
+            };
+            await addDoc(collection(db, "firstteam"), doc);
+
+            alert('반가워요')
+            window.location.reload();
+
+        })
+
+        let docs = await getDocs(collection(db, "firstteam"));
+        console.log(docs);
+        docs.forEach((doc) => {
+            let row = doc.data();
+            let name = row['name'];
+            let comment = row['comment'];
+            let pass = row['pass'];
+           
+        
+
+            let temp_html = `            
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">${name}</h5>
+                    <p class="card-text">${comment}</p>    
+                    <p class="del">${pass}</p>            
+                    <div class="dbutton" class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-outline-success me-md-2 btn-sm" type="button">삭제</button>
+
+                </div>
+
+                </div>
+            </div>
+        </div>`;
+
+            $('#card').append(temp_html);
+            $('.del').hide();
+
+        });
+
+        $("#savebtn").click(async function () {
+            $('#postingbox').toggle();
+
+        })
+
+
+        $(".dbutton").click(async function () {
+            const id = prompt('비밀번호를 입력해주세요.')
+           
+
+
+            console.log("test", id);
+            console.log("pass", pass);
+            
+
+            if (id == pass) {
+                alert('비밀번호가 일치 합니다.')
+            } else {
+                alert('비밀번호가 일치하지 않습니다.')
+            }
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <div class="banner">
+
+        <h1> 삐약</h1>
+        <h2>갓 태어난 병아리 교육생입니다. </h2>
+        <h2>열심히 성장하여 삐약이를 탈출해보겠습니다🙂</h2>
+
+    </div>
+
+    <div class="profile">
+        <div class="row row-cols-1 row-cols-md-2 g-2">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="./병아리2.png" class="card-img" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">이 하 빈</h5>
+                        <p class="card-text">ISFJ</p>
+                        <a href="./habin.html" class="btn btn-outline-warning">삐약</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="./병아리2.png" class="card-img" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">정 혜 원</h5>
+                        <p class="card-text">ESTP</p>
+                        <a href="./hyewon.html" class="btn btn-outline-warning">삐약</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="middle">
+        <h2>방명록을 작성해주세요!</h2>
+        <button id="savebtn" type="button" class="btn btn-outline-success me-md-2">방명록 적기</button>
+
+    </div>
+
+    <div class="mypostingbox" id="postingbox">
+
+        <div class="row g-2 mb-3">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="name" placeholder="방문자 성함">
+                    <label for="floatingInputGrid">이름을 남겨주세요!</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="pass" placeholder="비밀번호" maxlength="6">
+                    <label for="floatingInputGrid">비밀번호를 입력하세요</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="comment" placeholder="방명록을 입력해주세요!">
+            <label for="floatingInput">방명록을 작성해주세요!</label>
+        </div>
+
+        <button id="postingbtn" type="button" class="btn btn-success">기록하기</button>
+
+    </div>
+
+    <div class="cards">
+        <div id="card" class="row row-cols-1 row-cols-md-2 g-2">
+
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
